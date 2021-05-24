@@ -1,0 +1,144 @@
+﻿<Window x:Class="TscBarcode.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tsc="clr-namespace:Hardware.Print.Tsc;assembly=Hardware"
+        mc:Ignorable="d"
+        Title="MainWindow" Width="800" Height="600" Closed="Window_Closed" >
+
+    <Window.DataContext>
+        <tsc:PrintControlEntity />
+    </Window.DataContext>
+
+    <Grid DataContext="{StaticResource ViewModelProgramSettings}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Margin="2" Grid.Row="0" Grid.Column="0" Content="Ethernet" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox Margin="2" Grid.Row="0" Grid.Column="1" TextAlignment="Center" VerticalContentAlignment="Center" 
+                 DataContext="{StaticResource ViewModelProgramSettings}"
+                 Text="{Binding Path=IpAddress, Mode=TwoWay, IsAsync=True }"/>
+        <TextBox Margin="2" Grid.Row="0" Grid.Column="2" TextAlignment="Center" VerticalContentAlignment="Center" 
+                 DataContext="{StaticResource ViewModelProgramSettings}"
+                 Text="{Binding Path=Port, Mode=TwoWay, IsAsync=True }"/>
+
+        <Grid Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Margin="2" Grid.Row="0" Grid.Column="0" Content="Open" Click="ButtonEthernetOpen_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="1" Content="Print test" Click="ButtonEthernetPrintTest_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="2" Content="Clear buffer" Click="ButtonEthernetClearBuffer_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="3" Content="Calibrate" Click="ButtonCalibrate_Click" />
+            <Button Margin="2" Grid.Row="0" Grid.Column="4" Content="Close" Click="ButtonEthernetClose_Click"/>
+
+            <Button Margin="2" Grid.Row="1" Grid.Column="0" Content="Send cmd" Click="ButtonEthernetSendCmd_Click"/>
+            <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" 
+                     Text="{Binding Path=Cmd, Mode=TwoWay, IsAsync=True}" 
+                     VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+
+            <Button Margin="2" Grid.Row="2" Grid.Column="0" Content="Set cutter" Click="ButtonEthernetSendCmd_Click"/>
+            <TextBox Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" 
+                     Text="{Binding Path=CutterValue, Mode=TwoWay, IsAsync=True}" />
+
+            <Button Margin="2" Grid.Row="3" Grid.Column="0" Content="ZPL 1" Click="ButtonGetZpl1_OnClick"/>
+            <Button Margin="2" Grid.Row="3" Grid.Column="1" Content="ZPL 2" Click="ButtonGetZpl2_OnClick"/>
+            <Button Margin="2" Grid.Row="3" Grid.Column="2" Content="ZPL 3" Click="ButtonGetZpl3_OnClick"/>
+            <Button Margin="2" Grid.Row="3" Grid.Column="3" Content="ZPL Full" Click="ButtonGetZplFull_OnClick"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Margin="2" 
+                   Content="Width" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Width, Mode=TwoWay, IsAsync=True }"/>
+            <Label Grid.Row="0" Grid.Column="1" Margin="2" 
+                   Content="Height" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Height, Mode=TwoWay, IsAsync=True }"/>
+            <Label Grid.Row="0" Grid.Column="2" Margin="2" 
+                   Content="Speed" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Speed, Mode=TwoWay, IsAsync=True }"/>
+            <Label Grid.Row="0" Grid.Column="3" Margin="2" 
+                   Content="Density" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="3" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Density, Mode=TwoWay, IsAsync=True }"/>
+            <Label Grid.Row="0" Grid.Column="4" Margin="2" 
+                   Content="Sensor" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="4" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Sensor, Mode=TwoWay, IsAsync=True }"/>
+            <Label Grid.Row="0" Grid.Column="5" Margin="2" 
+                   Content="Vertical" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="5" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Vertical, Mode=TwoWay, IsAsync=True }"/>
+            <Label Grid.Row="0" Grid.Column="6" Margin="2" 
+                   Content="Offset" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="6" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     DataContext="{StaticResource ViewModelProgramSettings}"
+                     Text="{Binding Path=PrinterSetup.Offset, Mode=TwoWay, IsAsync=True }"/>
+
+            <Button Margin="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Setup" 
+                    Click="ButtonEthernetPrinterSetup_Click"/>
+            <Button Margin="2" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Content="Setup reset" 
+                    Click="ButtonEthernetPrinterSetupReset_Click"/>
+        </Grid>
+
+        <TextBox Margin="2" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Visible"
+                 VerticalContentAlignment="Top" HorizontalContentAlignment="Left" IsReadOnly="True"
+                 Text="{Binding Path=Log, Mode=TwoWay, IsAsync=True }"/>
+    </Grid>
+</Window>
