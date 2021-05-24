@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xsl:output method="text" encoding="UTF-16" omit-xml-declaration="no"/>
+<xsl:template match="/">
+
+<xsl:text>
+^XA</xsl:text>
+
+<xsl:text>
+^CI28
+^CWK,E:COURB.TTF
+^CWL,E:COURBI.TTF
+^CWM,E:COURBD.TTF
+^CWN,E:COUR.TTF
+^CWZ,E:ARIAL.TTF
+^CWW,E:ARIALBI.TTF
+^CWE,E:ARIALBD.TTF
+^CWR,E:ARIALI.TTF
+
+^LH0,10
+^FWR
+</xsl:text>
+
+
+<!-- размер этикеток
+ 6 dots = 1 mm, 152 dots = 1 inch
+ 8 dots = 1 mm, 203 dots = 1 inch
+ 11.8 dots = 1 mm, 300 dots = 1 inch
+ 24 dots = 1 mm, 608 dots = 1 inch -->
+
+<!--
+<xsl:variable name="width" select="80" />
+<xsl:variable name="length" select="98" />
+ -->
+<xsl:variable name="length" select="100" />
+<xsl:variable name="width" select="80" />
+
+<xsl:text>
+^LL</xsl:text><xsl:value-of select="$length*11.8" />
+<xsl:text>
+^PW</xsl:text><xsl:value-of select="$width*11.8" />
+
+<xsl:text>
+^FO820,50
+^CFZ,24,20
+^FB1100,4,0,C,0
+</xsl:text>
+<!-- адрес предприятия -->
+<xsl:text>^FH^FD</xsl:text>
+<xsl:text>Изготовитель: ООО "Владимирский стандарт" Россия, 600910 Владимирская обл. г.Радужный квартал 13/13 дом 20</xsl:text>
+<xsl:text>^FS</xsl:text>
+
+<!-- полное наименование номенклатуры -->
+<xsl:text>
+^FO510,50
+^CFE,44,34
+^FB910,4,0,J,0
+</xsl:text>
+<xsl:text>^FH^FD</xsl:text>
+<xsl:value-of select="/WeighingFactEntity/PLU/GoodsFullName"/>
+<xsl:text>^FS</xsl:text>
+
+<xsl:text>
+^FO350,50
+^CFZ,36,20
+^FB800,4,0,J,0
+</xsl:text>
+<!-- описание номенклатуры -->
+<xsl:text>^FH^FD</xsl:text>
+<xsl:value-of select="/WeighingFactEntity/PLU/GoodsDescription"/>
+<xsl:text>^FS</xsl:text>
+
+<!-- дата производства -->
+<xsl:text>
+^FO320,50
+^CFZ,25,20
+^FB170,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FDДата изгот.: </xsl:text>
+<xsl:text>^FS</xsl:text>
+
+<xsl:text>
+^FO270,50
+^CFK,56,40
+^FB300,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FD</xsl:text>
+<xsl:variable name="dt" select="/WeighingFactEntity/ProductDate"/>
+<xsl:value-of select="concat(substring($dt,9,2),'.',substring($dt,6,2),'.',substring($dt,1,4))"/>
+<xsl:text/>
+<xsl:text>^FS</xsl:text>
+
+<!-- срок годности -->
+<xsl:text>
+^FO320,360
+^CFZ,25,20
+^FB170,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FDГоден до: </xsl:text>
+<xsl:text>^FS</xsl:text>
+
+<xsl:text>
+^FO270,360
+^CFK,56,40
+^FB300,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FD</xsl:text>
+<xsl:variable name="et" select="/WeighingFactEntity/ExpirationDate"/>
+<xsl:value-of select="concat(substring($et,9,2),'.',substring($et,6,2),'.',substring($et,1,4))"/>
+<xsl:text/>
+<xsl:text>^FS</xsl:text>
+
+
+<!-- КОЛИЧЕСТВО -->
+<xsl:text>
+^FO320,720
+^CFZ,25,20
+^FB100,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FDКол-во:^FS</xsl:text>
+
+<xsl:text>
+^FO270,720
+^CFK,56,40
+^FB150,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FD</xsl:text>
+<xsl:value-of select="/WeighingFactEntity/PLU/GoodsBoxQuantly"/>
+<xsl:text>^FS</xsl:text>
+
+<xsl:text>
+^FO270,800
+^CFM,42,38
+^FB100,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FDШТ^FS</xsl:text>
+
+
+<!-- замес -->
+<xsl:text>
+^FO200,50
+^CFZ,25,20
+^FB200,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FDЗамес: </xsl:text>
+<xsl:value-of select="/WeighingFactEntity/KneadingNumber"/>
+<xsl:text>^FS</xsl:text>
+
+<!-- цех - линия - весовой пост -->
+<xsl:text>
+^FO200,200
+^CFZ,25,20
+^FB450,1,0,L,0
+</xsl:text>
+<xsl:text>^FH^FDЦех/Линия: </xsl:text>
+<xsl:value-of select="/WeighingFactEntity/Scale/Description"/>
+<xsl:text>^FS
+</xsl:text>
+
+<!-- штрихкод CODE128 299 -->
+<xsl:text>
+^FO200,1000
+^BCN,120,Y,N,N
+^BY2
+</xsl:text>
+<xsl:text>^FD</xsl:text>
+<xsl:text>299</xsl:text>
+<!-- терминал -->
+<xsl:variable name="deviceid" select="/WeighingFactEntity/Scale/DeviceId"/>
+<xsl:value-of select="substring(concat('00000',$deviceid),string-length($deviceid)+1,5)"/>
+<!-- регистрация  -->
+<xsl:variable name="unitid" select="/WeighingFactEntity/Sscc/UnitID"/>
+<xsl:value-of select="substring(concat('00000000',$unitid),string-length($unitid)+1,8)"/>
+<xsl:text>^FS
+</xsl:text>
+
+<!-- штрихкод Interleaved 2 of 5 Bar Code  -->
+<xsl:text>
+^FO740,20
+^B2R,120,Y,N,Y,Y
+^BY3
+</xsl:text>
+<xsl:text>^FD</xsl:text>
+<xsl:text>298</xsl:text>
+
+<!-- терминал -->
+<xsl:value-of select="substring(concat('00000',$deviceid),string-length($deviceid)+1,5)"/>
+<!-- регистрация  -->
+<xsl:value-of select="substring(concat('00000000',$unitid),string-length($unitid)+1,8)"/>
+<!-- дата -->
+<xsl:variable name="dt2" select="/WeighingFactEntity/RegDate"/>
+<xsl:value-of select="concat(substring($dt2,3,2), substring($dt2,6,2), substring($dt2,9,2) )"/>
+<!-- время -->
+<xsl:variable name="tm" select="/WeighingFactEntity/RegDate"/>
+<xsl:value-of select="concat(substring($tm,12,2), substring($tm,15,2), substring($tm,18,2) )"/>
+<!-- плу -->
+<xsl:variable name="plu" select="/WeighingFactEntity/PLU/PLU"/>
+<xsl:value-of select="substring(concat('000',$plu),string-length($plu)+1,3)"/>
+<!-- нетто -->
+<xsl:variable name="nw" select="/WeighingFactEntity/WeightNetto"/>
+<xsl:value-of select="substring(concat('00000',$nw),string-length($nw)+1,5)"/>
+
+<xsl:variable name="knd" select="/WeighingFactEntity/KneadingNumber"/>
+<xsl:value-of select="substring(concat('000',$knd),string-length($knd)+1,3)"/>
+
+<xsl:text>^FS
+</xsl:text>
+
+<!-- штрихкод GS1 -->
+<xsl:text>
+^FO50,50
+^BCR,120,Y,N,Y,D
+^BY3
+</xsl:text>
+<xsl:text>^FD</xsl:text>
+<xsl:text>(01)</xsl:text><xsl:value-of select="/WeighingFactEntity/PLU/GTIN"/>
+<xsl:text>(37)</xsl:text><xsl:value-of select="/WeighingFactEntity/PLU/GoodsBoxQuantly"/><xsl:text>&gt;8</xsl:text>
+<xsl:variable name="xt" select="/WeighingFactEntity/ProductDate"/>
+<xsl:text>(11)</xsl:text><xsl:value-of select="concat(substring($xt,3,2), substring($xt,6,2), substring($xt,9,2) )"/>
+<xsl:text>(10)</xsl:text><xsl:value-of select="concat(substring($xt,6,2), substring($xt,9,2) )"/><xsl:text>&gt;8</xsl:text>
+<!-- номер по порядку 
+<xsl:text>(21)</xsl:text><xsl:value-of select="substring(concat('000000000',$unitid),string-length($unitid)+1,9)"/><xsl:text>&gt;8</xsl:text>
+-->
+<xsl:text>^FS
+</xsl:text>
+
+<!-- логотипы -->
+<xsl:text>
+^FO200,888
+^XGE:EAC.GRF,1,1^FS
+^FO315,888
+^XGE:FISH.GRF,1,1^FS
+^FO435,888
+^XGE:TEMP6.GRF,1,1^FS
+</xsl:text>
+
+<xsl:text>
+^XZ</xsl:text><xsl:text>
+</xsl:text>
+</xsl:template>
+</xsl:stylesheet>

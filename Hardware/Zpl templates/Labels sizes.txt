@@ -1,0 +1,38 @@
+98 x 109  |  100 x 110
+38 x  57  |   40 x  60
+79 x  98  |   80 x 100
+60 x 150  |   60 x 150
+57 x  89  |   60 x  90
+99 x 100  |  100 x 100
+
+300 DPI
+1 mm = 12 dots
+
+------------------------------------------------------------------------------------------------------------------------
+80 x 100
+--- Auto ---
+Unit:              inch mm
+Paper Width:       81.95 mm
+Paper Height:      100.10 mm
+Gap Size:          4.00 mm
+Gap Offset:        0.00 mm
+Black Mark Size:   5.00 mm
+Black Mark Offset: 5.00 mm
+Sensor Type:       Gap
+Print Method:      Direct-Thermal
+--- Manual ---
+Unit:              inch mm
+Paper Width:       83.00 mm
+Paper Height:      101.50 mm
+Gap Size:          3.50 mm
+Gap Offset:        0.00 mm
+Black Mark Size:   5.00 mm
+Black Mark Offset: 5.00 mm
+Sensor Type:       Gap
+Print Method:      Direct-Thermal
+
+Margin left:       1.75 mm
+Margin right:      1.75 mm
+Margin top:        2.00 mm
+Margin bottom:     2.00 mm
+------------------------------------------------------------------------------------------------------------------------
