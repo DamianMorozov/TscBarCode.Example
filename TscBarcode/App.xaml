@@ -1,10 +1,21 @@
 ﻿<Application x:Class="TscBarcode.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TscBarcode"
              xmlns:tsc="clr-namespace:Hardware.Print.Tsc;assembly=Hardware"
+             xmlns:print="clr-namespace:Hardware.Print;assembly=Hardware"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <tsc:PrintControlEntity x:Key="ViewModelProgramSettings" />
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="enumPrintLabelSize">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="print:PrintLabelSize"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="enumPrintDpi">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="print:PrintDpi"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Application.Resources>
 </Application>

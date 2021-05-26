@@ -24,10 +24,10 @@ Print Method:      Direct-Thermal
 Unit:              inch mm
 Paper Width:       83.00 mm
 Paper Height:      101.50 mm
-Gap Size:          3.50 mm
+Gap Size:          3.75 mm
 Gap Offset:        0.00 mm
-Black Mark Size:   5.00 mm
-Black Mark Offset: 5.00 mm
+Black Mark Size:   3.75 mm
+Black Mark Offset: 0.00 mm
 Sensor Type:       Gap
 Print Method:      Direct-Thermal
 
@@ -35,4 +35,7 @@ Margin left:       1.75 mm
 Margin right:      1.75 mm
 Margin top:        2.00 mm
 Margin bottom:     2.00 mm
+------------------------------------------------------------------------------------------------------------------------
+Paper width:       79.5 mm
+Paper height:      97.5 mm
 ------------------------------------------------------------------------------------------------------------------------

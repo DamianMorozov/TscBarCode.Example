@@ -1,8 +1,10 @@
-﻿using System;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using Hardware.Utils;
 
 namespace Hardware.Print.Tsc
 {
@@ -58,7 +60,7 @@ namespace Hardware.Print.Tsc
         }
 
         public string SpeedDefault => "4";
-        private Speed _speed;
+        private PrintSpeed _speed;
         public string Speed
         {
             get => Convert.ToString((int)_speed);
@@ -67,16 +69,16 @@ namespace Hardware.Print.Tsc
                 if (int.TryParse(value, out int temp))
                 {
                     if (temp >= 0 && temp <= 12)
-                        _speed = (Speed)temp;
+                        _speed = (PrintSpeed)temp;
                     else
-                        _speed = (Speed)int.Parse(SpeedDefault);
+                        _speed = (PrintSpeed)int.Parse(SpeedDefault);
                 }
                 OnPropertyRaised();
             }
         }
 
         public string DensityDefault => "6";
-        private Density _density;
+        private PrintDensity _density;
         public string Density
         {
             get => Convert.ToString((int)_density);
@@ -85,16 +87,16 @@ namespace Hardware.Print.Tsc
                 if (int.TryParse(value, out int temp))
                 {
                     if (temp >= 0 && temp <= 15)
-                        _density = (Density)temp;
+                        _density = (PrintDensity)temp;
                     else
-                        _density = (Density)int.Parse(DensityDefault);
+                        _density = (PrintDensity)int.Parse(DensityDefault);
                 }
                 OnPropertyRaised();
             }
         }
 
         public string SensorDefault => "0";
-        private Sensor _sensor;
+        private PrintSensor _sensor;
         public string Sensor
         {
             get => Convert.ToString((int)_sensor);
@@ -103,9 +105,9 @@ namespace Hardware.Print.Tsc
                 if (int.TryParse(value, out int temp))
                 {
                     if (temp >= 0 && temp <= 1)
-                        _sensor = (Sensor)temp;
+                        _sensor = (PrintSensor)temp;
                     else
-                        _sensor = (Sensor)int.Parse(SensorDefault);
+                        _sensor = (PrintSensor)int.Parse(SensorDefault);
                 }
                 OnPropertyRaised();
             }
@@ -151,43 +153,43 @@ namespace Hardware.Print.Tsc
 
         #region Constructor and destructor
 
-        public PrintSetupEntity(LabelSize size)
+        public PrintSetupEntity(PrintLabelSize size)
         {
             switch (size)
             {
-                case LabelSize.Size40x60:
+                case PrintLabelSize.Size40x60:
                     Width = "40";
                     Height = "60";
                     break;
-                case LabelSize.Size60x150:
+                case PrintLabelSize.Size60x150:
                     Width = "60";
                     Height = "150";
                     break;
-                case LabelSize.Size60x90:
+                case PrintLabelSize.Size60x90:
                     Width = "60";
                     Height = "90";
                     break;
-                case LabelSize.Size60x100:
+                case PrintLabelSize.Size60x100:
                     Width = "60";
                     Height = "100";
                     break;
-                case LabelSize.Size80x100:
+                case PrintLabelSize.Size80x100:
                     if (CultureInfo.CurrentCulture.Name.Equals("ru-RU"))
                     {
-                        Width = "81,95";
-                        Height = "100,10";
+                        Width = "83,00";
+                        Height = "101,50";
                     }
                     else
                     {
-                        Width = "81.95";
-                        Height = "100.10";
+                        Width = "83.00";
+                        Height = "101.50";
                     }
                     break;
-                case LabelSize.Size100x100:
+                case PrintLabelSize.Size100x100:
                     Width = "100";
                     Height = "100";
                     break;
-                case LabelSize.Size100x110:
+                case PrintLabelSize.Size100x110:
                     Width = "100";
                     Height = "110";
                     break;

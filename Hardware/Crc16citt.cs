@@ -1,5 +1,8 @@
-﻿using System;
-using Hardware.Utils;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+using System;
+using Hardware.Print;
 
 namespace Hardware
 {
@@ -25,7 +28,7 @@ namespace Hardware
             return BitConverter.GetBytes(crc);
         }
 
-        public Crc16Ccitt(InitialCrcValue initialValue)
+        public Crc16Ccitt(PrintInitialCrcValue initialValue)
         {
             this.initialValue = (ushort)initialValue;
             ushort temp, a;

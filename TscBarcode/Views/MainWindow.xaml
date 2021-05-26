@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tsc="clr-namespace:Hardware.Print.Tsc;assembly=Hardware"
         mc:Ignorable="d"
-        Title="MainWindow" Width="800" Height="600" Closed="Window_Closed" >
+        Title="TSC BarCode print examples" Width="800" Height="600" Closed="Window_Closed" >
 
     <Window.DataContext>
         <tsc:PrintControlEntity />
@@ -16,11 +16,10 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="4*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="8*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="2*" />
+            <RowDefinition Height="2.2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -39,7 +38,7 @@
         <Grid Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
@@ -51,25 +50,48 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
 
-            <Button Margin="2" Grid.Row="0" Grid.Column="0" Content="Open" Click="ButtonEthernetOpen_Click"/>
-            <Button Margin="2" Grid.Row="0" Grid.Column="1" Content="Print test" Click="ButtonEthernetPrintTest_Click"/>
-            <Button Margin="2" Grid.Row="0" Grid.Column="2" Content="Clear buffer" Click="ButtonEthernetClearBuffer_Click"/>
-            <Button Margin="2" Grid.Row="0" Grid.Column="3" Content="Calibrate" Click="ButtonCalibrate_Click" />
-            <Button Margin="2" Grid.Row="0" Grid.Column="4" Content="Close" Click="ButtonEthernetClose_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="0" Content="Open" Click="ButtonOpen_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="1" Content="Print test" Click="ButtonCmdPrintTest_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="2" Content="Clear buffer" Click="ButtonCmdClearBuffer_Click"/>
+            <Button Margin="2" Grid.Row="0" Grid.Column="3" Content="Calibrate" Click="ButtonCmdCalibrate_Click" />
+            <Button Margin="2" Grid.Row="0" Grid.Column="4" Content="Close" Click="ButtonClose_Click"/>
 
-            <Button Margin="2" Grid.Row="1" Grid.Column="0" Content="Send cmd" Click="ButtonEthernetSendCmd_Click"/>
-            <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" 
-                     Text="{Binding Path=Cmd, Mode=TwoWay, IsAsync=True}" 
-                     VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
 
-            <Button Margin="2" Grid.Row="2" Grid.Column="0" Content="Set cutter" Click="ButtonEthernetSendCmd_Click"/>
-            <TextBox Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" 
+                <TextBox Margin="2" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" 
+                         Text="{Binding Path=Cmd.TextPrepare, Mode=TwoWay, IsAsync=True}" 
+                         VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+                <Button Margin="2" Grid.Row="0" Grid.Column="1" Content="Convert ZPL" Click="ButtonCmdConvertZpl_Click"/>
+                <Button Margin="2" Grid.Row="1" Grid.Column="1" Content="Send cmd" Click="ButtonCmdSendCustom_Click"/>
+                <TextBox Margin="2" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" 
+                         Text="{Binding Path=Cmd.Text, Mode=TwoWay, IsAsync=True}" 
+                         VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+            </Grid>
+
+            <CheckBox Margin="2" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                      Content="Is open" IsEnabled="False" IsChecked="{Binding Path=IsOpen, Mode=OneWay, IsAsync=True}" />
+            <CheckBox Margin="2" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                      Content="Is normal" IsEnabled="False" IsChecked="{Binding Path=IsStatusNormal, Mode=OneWay, IsAsync=True}" />
+            <Button Margin="2" Grid.Row="2" Grid.Column="2" Content="Set cutter" Click="ButtonCmdSetCutter_Click"/>
+            <TextBox Margin="2" Grid.Row="2" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                      Text="{Binding Path=CutterValue, Mode=TwoWay, IsAsync=True}" />
+            <CheckBox Margin="2" Grid.Row="2" Grid.Column="4" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                      Content="Clear buffer" 
+                     IsChecked="{Binding Path=IsClearBuffer, Mode=TwoWay, IsAsync=True}" />
 
             <Button Margin="2" Grid.Row="3" Grid.Column="0" Content="ZPL 1" Click="ButtonGetZpl1_OnClick"/>
             <Button Margin="2" Grid.Row="3" Grid.Column="1" Content="ZPL 2" Click="ButtonGetZpl2_OnClick"/>
             <Button Margin="2" Grid.Row="3" Grid.Column="2" Content="ZPL 3" Click="ButtonGetZpl3_OnClick"/>
-            <Button Margin="2" Grid.Row="3" Grid.Column="3" Content="ZPL Full" Click="ButtonGetZplFull_OnClick"/>
+            <Button Margin="2" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Content="ZPL Full" Click="ButtonGetZplFull_OnClick"/>
         </Grid>
 
         <Grid Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="2">
@@ -131,14 +153,43 @@
                      DataContext="{StaticResource ViewModelProgramSettings}"
                      Text="{Binding Path=PrinterSetup.Offset, Mode=TwoWay, IsAsync=True }"/>
 
-            <Button Margin="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Setup" 
-                    Click="ButtonEthernetPrinterSetup_Click"/>
-            <Button Margin="2" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Content="Setup reset" 
-                    Click="ButtonEthernetPrinterSetupReset_Click"/>
+            <Button Margin="2" Grid.Row="2" Grid.Column="0" Content="Setup reset" 
+                    Click="ButtonPrintSetupReset_Click"/>
+            <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" 
+                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                      SelectedValue="{Binding Path=Size, Mode=TwoWay, IsAsync=True}"
+                      ItemsSource="{Binding Source={StaticResource enumPrintLabelSize}}"/>
+            <Button Margin="2" Grid.Row="2" Grid.Column="2" Content="Setup" 
+                    Click="ButtonPrintSetup_Click" />
+            <ComboBox Margin="2" Grid.Row="2" Grid.Column="3" 
+                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                      SelectedValue="{Binding Path=Dpi, Mode=TwoWay, IsAsync=True}"
+                      ItemsSource="{Binding Source={StaticResource enumPrintDpi}}"/>
+            <TextBox Grid.Row="2" Grid.Column="4" Margin="2" 
+                     TextAlignment="Center" VerticalContentAlignment="Center" 
+                     Text="{Binding Path=FeedMm, Mode=TwoWay, IsAsync=True }"/>
+            <Button Margin="2" Grid.Row="2" Grid.Column="5" Content="Feed (mm)" 
+                    Click="ButtonFeed_Click"/>
         </Grid>
 
-        <TextBox Margin="2" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Visible"
-                 VerticalContentAlignment="Top" HorizontalContentAlignment="Left" IsReadOnly="True"
-                 Text="{Binding Path=Log, Mode=TwoWay, IsAsync=True }"/>
+        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Margin="0" Grid.Row="0" Grid.Column="0" Content="Exception" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Label Margin="0" Grid.Row="0" Grid.Column="1" Content="Cmd exception" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Margin="2" Grid.Row="1" Grid.Column="0" 
+                     VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" 
+                     IsReadOnly="True" Text="{Binding Path=Exception.Message, Mode=OneWay, IsAsync=True }"/>
+            <TextBox Margin="2" Grid.Row="1" Grid.Column="1" 
+                     VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" 
+                     IsReadOnly="True" Text="{Binding Path=Cmd.Exception.Message, Mode=OneWay, IsAsync=True }"/>
+        </Grid>
     </Grid>
 </Window>

@@ -11,8 +11,8 @@ using System.Windows;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WeightService")]
-[assembly: AssemblyCopyright("Copyright © 2020 - 2021")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("Copyright © 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.60.0")]
-[assembly: AssemblyFileVersion("0.1.60.0")]
+[assembly: AssemblyVersion("0.2.10.0")]
+[assembly: AssemblyFileVersion("0.2.10.0")]

@@ -1,9 +1,13 @@
-﻿namespace Hardware.Zpl
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+namespace Hardware.Zpl
 {
     public static class ZplSamples
     {
         public static string GetSampleFull => @"
 ^XA
+
 ^CI28
 ^CWK,E:COURB.TTF
 ^CWL,E:COURBI.TTF
@@ -17,8 +21,6 @@
 ^LH0,10
 ^FWR
 
-^LL1180
-^PW944
 ^FO820,30
 ^CFZ,24,20
 ^FB1100,4,0,C,0
@@ -38,26 +40,32 @@
 ^CFZ,25,20
 ^FB170,1,0,L,0
 ^FH^FDДата изгот.: ^FS
+
 ^FO270,50
 ^CFK,56,40
 ^FB300,1,0,L,0
 ^FH^FD21.05.2021^FS
+
 ^FO320,360
 ^CFZ,25,20
 ^FB170,1,0,L,0
 ^FH^FDГоден до: ^FS
+
 ^FO270,360
 ^CFK,56,40
 ^FB300,1,0,L,0
 ^FH^FD20.06.2021^FS
+
 ^FO320,720
 ^CFZ,25,20
 ^FB100,1,0,L,0
 ^FH^FDКол-во:^FS
+
 ^FO270,720
 ^CFK,56,40
 ^FB150,1,0,L,0
 ^FH^FD15^FS
+
 ^FO270,800
 ^CFM,42,38
 ^FB100,1,0,L,0
@@ -99,6 +107,8 @@
 ^FO435,883
 [TEMP6_116x113_090]
 ^FS
+
+^PQ1
 
 ^XZ
                     ".TrimStart('\r', ' ', '\n').TrimEnd('\r', ' ', '\n');

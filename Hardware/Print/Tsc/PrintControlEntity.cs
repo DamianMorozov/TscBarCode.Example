@@ -1,4 +1,6 @@
-﻿using Hardware.Utils;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -20,6 +22,26 @@ namespace Hardware.Print.Tsc
 
         #region Public properties
 
+        private PrintInterface _interface;
+        public PrintInterface Interface
+        {
+            get => _interface;
+            set
+            {
+                _interface = value;
+                OnPropertyRaised();
+            }
+        }
+        private PrintCmdEntity _cmd;
+        public PrintCmdEntity Cmd
+        {
+            get => _cmd;
+            set
+            {
+                _cmd = value;
+                OnPropertyRaised();
+            }
+        }
         private string _ipAddress;
         public string IpAddress
         {
@@ -30,7 +52,6 @@ namespace Hardware.Print.Tsc
                 OnPropertyRaised();
             }
         }
-
         private int _port;
         public int Port
         {
@@ -41,20 +62,8 @@ namespace Hardware.Print.Tsc
                 OnPropertyRaised();
             }
         }
-
-        private string _cmd;
-        public string Cmd
-        {
-            get => _cmd;
-            set
-            {
-                _cmd = value;
-                OnPropertyRaised();
-            }
-        }
-        
-        private LabelSize _size;
-        public LabelSize Size
+        private PrintLabelSize _size;
+        public PrintLabelSize Size
         {
             get => _size;
             set
@@ -63,7 +72,26 @@ namespace Hardware.Print.Tsc
                 OnPropertyRaised();
             }
         }
-
+        private PrintDpi _dpi;
+        public PrintDpi Dpi
+        {
+            get => _dpi;
+            set
+            {
+                _dpi = value;
+                OnPropertyRaised();
+            }
+        }
+        private ushort _feedMm;
+        public ushort FeedMm
+        {
+            get => _feedMm;
+            set
+            {
+                _feedMm = value;
+                OnPropertyRaised();
+            }
+        }
         private TSCSDK.ethernet _tscEthernet;
         public TSCSDK.ethernet TscEthernet
         {
@@ -74,7 +102,6 @@ namespace Hardware.Print.Tsc
                 OnPropertyRaised();
             }
         }
-
         private PrintSetupEntity _printerSetup;
         public PrintSetupEntity PrinterSetup
         {
@@ -85,28 +112,77 @@ namespace Hardware.Print.Tsc
                 OnPropertyRaised();
             }
         }
-        public bool IsOpen { get; private set; }
-        public bool IsStatusNormal => TscEthernet != null && Equals(GetStatusAsStringEng(), "Normal");
-        public int CutterValue { get; set; }
-        public Interface Interface { get; set; }
+        private bool _isOpen;
+        public bool IsOpen
+        {
+            get => _isOpen;
+            private set
+            {
+                _isOpen = value;
+                OnPropertyRaised();
+            }
+        }
+        
+        private bool _isStatusNormal;
+        public bool IsStatusNormal
+        {
+            get => _isStatusNormal;
+            private set
+            {
+                _isStatusNormal = value;
+                OnPropertyRaised();
+            }
+        }
+        private int _cutterValue;
+        public int CutterValue
+        {
+            get => _cutterValue;
+            set
+            {
+                _cutterValue = value;
+                OnPropertyRaised();
+            }
+        }
+        private bool _isClearBuffer;
+        public bool IsClearBuffer
+        {
+            get => _isClearBuffer;
+            set
+            {
+                _isClearBuffer = value;
+                OnPropertyRaised();
+            }
+        }
+        private Exception _exception;
+        public Exception Exception
+        {
+            get => _exception;
+            set
+            {
+                _exception = value;
+                OnPropertyRaised();
+            }
+        }
 
         #endregion
 
         #region Constructor
 
-        public PrintControlEntity() : this(Interface.Ethernet, "")
+        public PrintControlEntity() : this(PrintInterface.Ethernet, "")
         {
             //
         }
         
-        public PrintControlEntity(Interface @interface, string ipAddress = "", int port = 9100)
+        public PrintControlEntity(PrintInterface @interface, string ipAddress = "", int port = 9100, PrintLabelSize size = PrintLabelSize.Size80x100, PrintDpi dpi = PrintDpi.Dpi300)
         {
             IpAddress = ipAddress;
             Port = port;
             Interface = @interface;
-            Size = LabelSize.Size80x100;
+            Size = size;
+            Dpi = dpi;
             PrinterSetup = new PrintSetupEntity(Size);
-            Setup(LabelSize.Size80x100, true);
+            Cmd = new PrintCmdEntity(this);
+            IsClearBuffer = true;
         }
 
         #endregion
@@ -115,37 +191,47 @@ namespace Hardware.Print.Tsc
 
         public void Open()
         {
-            switch (Interface)
+            try
             {
-                case Interface.Usb:
-                    break;
-                case Interface.Ethernet:
-                    if (TscEthernet == null)
-                        TscEthernet = new TSCSDK.ethernet();
-                    if (!IsOpen && !string.IsNullOrEmpty(IpAddress) && Port > 0)
-                    {
-                        TscEthernet.openport(IpAddress, Port);
-                        IsOpen = true;
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Interface), Interface, null);
+                Exception = null;
+                switch (Interface)
+                {
+                    case PrintInterface.Usb:
+                        break;
+                    case PrintInterface.Ethernet:
+                        if (TscEthernet == null)
+                            TscEthernet = new TSCSDK.ethernet();
+                        if (!IsOpen && !string.IsNullOrEmpty(IpAddress) && Port > 0)
+                        {
+                            TscEthernet.openport(IpAddress, Port);
+                            IsOpen = true;
+                            IsStatusNormal = TscEthernet != null && Equals(GetStatusAsStringEng(), "Normal");
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(Interface), Interface, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception = ex;
+                throw;
             }
         }
 
-        public void Setup(LabelSize size, bool isResetGap)
+        public void Setup(PrintLabelSize size, bool isResetGap)
         {
             Open();
 
             PrinterSetup = new PrintSetupEntity(size);
             if (isResetGap)
-                SetGap(false, true);
+                Cmd.SetGap(false, true);
 
             switch (Interface)
             {
-                case Interface.Usb:
+                case PrintInterface.Usb:
                     break;
-                case Interface.Ethernet:
+                case PrintInterface.Ethernet:
                     if (IsOpen)
                         TscEthernet?.setup(
                             PrinterSetup.Width,
@@ -163,96 +249,85 @@ namespace Hardware.Print.Tsc
 
         public void Close()
         {
-            IsOpen = false;
-            switch (Interface)
+            try
             {
-                case Interface.Usb:
-                    break;
-                case Interface.Ethernet:
-                    if (IsOpen)
-                        TscEthernet?.closeport();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Interface), Interface, null);
+                Exception = null;
+                switch (Interface)
+                {
+                    case PrintInterface.Usb:
+                        break;
+                    case PrintInterface.Ethernet:
+                        if (IsOpen)
+                            TscEthernet?.closeport();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(Interface), Interface, null);
+                }
+                IsOpen = false;
+                IsStatusNormal = false;
             }
-        }
-
-        public void SendCmd(bool isClose, string cmd, bool isClearBuffer)
-        {
-            Cmd = cmd;
-            Open();
-            switch (Interface)
+            catch (Exception ex)
             {
-                case Interface.Usb:
-                    break;
-                case Interface.Ethernet:
-                    if (IsOpen && isClearBuffer)
-                        TscEthernet.clearbuffer();
-                    if (IsOpen && !string.IsNullOrEmpty(cmd))
-                        TscEthernet.sendcommand(cmd);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Interface), Interface, null);
+                Exception = ex;
+                throw;
             }
-            if (isClose)
-                Close();
         }
 
         #endregion
 
         #region Public and private methods
 
-        public Status GetStatusAsEnum(byte? value)
+        public PrintStatus GetStatusAsEnum(byte? value)
         {
             switch (value)
             {
                 // Normal
                 case (byte)0x00:
-                    return (Status)0x00;
+                    return (PrintStatus)0x00;
                 // Head opened
                 case (byte)0x01:
-                    return (Status)0x01;
+                    return (PrintStatus)0x01;
                 // Paper Jam
                 case (byte)0x02:
-                    return (Status)0x02;
+                    return (PrintStatus)0x02;
                 // Paper Jam and head opened
                 case (byte)0x03:
-                    return (Status)0x03;
+                    return (PrintStatus)0x03;
                 // Out of paper
                 case (byte)0x04:
-                    return (Status)0x04;
+                    return (PrintStatus)0x04;
                 // Out of paper and head opened
                 case (byte)0x05:
-                    return (Status)0x05;
+                    return (PrintStatus)0x05;
                 // Out of ribbon
                 case (byte)0x08:
-                    return (Status)0x08;
+                    return (PrintStatus)0x08;
                 // Out of ribbon and head opened
                 case (byte)0x09:
-                    return (Status)0x09;
+                    return (PrintStatus)0x09;
                 // Out of ribbon and paper jam
                 case (byte)0x0A:
-                    return (Status)0x0A;
+                    return (PrintStatus)0x0A;
                 // Out of ribbon, paper jam and head opened
                 case (byte)0x0B:
-                    return (Status)0x0B;
+                    return (PrintStatus)0x0B;
                 // Out of ribbon and out of paper
                 case (byte)0x0C:
-                    return (Status)0x0C;
+                    return (PrintStatus)0x0C;
                 // Out of ribbon, out of paper and head opened
                 case (byte)0x0D:
-                    return (Status)0x0D;
+                    return (PrintStatus)0x0D;
                 // Pause
                 case (byte)0x10:
-                    return (Status)0x10;
+                    return (PrintStatus)0x10;
                 // Printing
                 case (byte)0x20:
-                    return (Status)0x20;
+                    return (PrintStatus)0x20;
             }
-            return Status.HundredTwentyEight;
+            return PrintStatus.HundredTwentyEight;
         }
 
-        public Status GetStatusAsEnum()
+        public PrintStatus GetStatusAsEnum()
         {
             return GetStatusAsEnum(TscEthernet?.printerstatus());
         }
@@ -369,49 +444,7 @@ namespace Hardware.Print.Tsc
                 var st = TscEthernet.printerstatus();
                 return GetStatusAsStringEng(st);
             }
-            return GetStatusAsStringEng((byte)Status.HundredTwentyEight);
-        }
-
-        #endregion
-
-        #region Public and private methods - Control
-
-        public void Calibrate(bool isClose, bool isClearBuffer)
-        {
-            SendCmd(isClose, "GAPDETECT", isClearBuffer);
-        }
-
-        public void SetGap(bool isClose, bool isClearBuffer, double gapSize = 4.0, double gapOffset = 0.0)
-        {
-            var strGapSize = $"{gapSize}".Replace(',', '.');
-            var strGapOffset = $"{gapOffset}".Replace(',', '.');
-            SendCmd(isClose, $"GAP {strGapSize} mm, {strGapOffset} mm", isClearBuffer);
-        }
-
-        public void ClearBuffer(bool isClose)
-        {
-            SendCmd(isClose, string.Empty, true);
-        }
-
-        public void SetCutter(bool isClose, int value, bool isClearBuffer)
-        {
-            if (value >= 0)
-                SendCmd(isClose, $"SET CUTTER {value}", isClearBuffer);
-        }
-
-        public void PrintTest(bool isClose)
-        {
-            Open();
-
-            TscEthernet.clearbuffer();
-
-            TscEthernet.barcode("100", "200", "128", "100", "1", "0", "3", "3", "123456789");
-            TscEthernet.printerfont("100", "100", "3", "0", "1", "1", "Printer Font Test");
-            TscEthernet.sendcommand("BOX 50,50,500,400,3\n");
-            TscEthernet.printlabel("1", "1");
-
-            if (isClose)
-                Close();
+            return GetStatusAsStringEng((byte)PrintStatus.HundredTwentyEight);
         }
 
         #endregion

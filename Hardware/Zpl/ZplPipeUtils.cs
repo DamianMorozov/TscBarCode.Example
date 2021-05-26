@@ -1,4 +1,6 @@
-﻿using Hardware.Utils;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +11,7 @@ using System.Text;
 using System.Text.Unicode;
 using System.Xml;
 using System.Xml.Xsl;
+using Hardware.Print;
 using Hardware.Print.Native;
 
 namespace Hardware.Zpl

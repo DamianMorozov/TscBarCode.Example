@@ -1,6 +1,9 @@
-﻿namespace Hardware.Utils
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+namespace Hardware.Print
 {
-    public enum Speed
+    public enum PrintSpeed
     {
         Zero = 0,
         One = 1,
@@ -17,7 +20,7 @@
         Twelve = 12,
     }
 
-    public enum Density
+    public enum PrintDensity
     {
         Zero = 0,
         One = 1,
@@ -37,14 +40,14 @@
         Fifteen = 15,
     }
 
-    public enum Sensor
+    public enum PrintSensor
     {
         Zero = 0,
         One = 1,
     }
 
     // \\palych\VladimirStandardCorp\TSC BarCode Printer ML340P\SDKs\Pdf\TSC_TSPL_TSPL2_Programming.pdf
-    public enum Status
+    public enum PrintStatus
     {
         Zero = 0,       // 00 Normal
         One = 1,        // 01 Head opened
@@ -63,20 +66,20 @@
         HundredTwentyEight = 128, // 80 Other error
     }
 
-    public enum InitialCrcValue
+    public enum PrintInitialCrcValue
     {
         Zeros,
         NonZero1 = 0xffff,
         NonZero2 = 0x1D0F,
     }
 
-    public enum Interface
+    public enum PrintInterface
     {
         Usb,
         Ethernet,
     }
 
-    public enum LabelSize
+    public enum PrintLabelSize
     {
         Size40x60,
         Size60x150,
@@ -85,5 +88,21 @@
         Size80x100,
         Size100x100,
         Size100x110,
+    }
+
+    public enum PrintDpi
+    {
+        Dpi100,
+        Dpi200,
+        Dpi300,
+        Dpi400,
+        Dpi500,
+        Dpi600,
+        Dpi700,
+        Dpi800,
+        Dpi900,
+        Dpi1000,
+        Dpi1100,
+        Dpi1200,
     }
 }

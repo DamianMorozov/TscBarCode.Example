@@ -6,7 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.100] - 2021-05-24
+## [0.2.10] - 2021-05-26
+### Added
+- Feed cmd
+- Parse prepare ZPL into finally cmd
+### Changed
+- PVS-Studio comments for analyze
+- Tsc print entities
+- ZplPipeEntity
+- GUI main view
+- Ethernet TSC cmd
+
+## [0.1.10] - 2021-05-24
 ### Added
 - TscLibNet
 - Hardware lib project

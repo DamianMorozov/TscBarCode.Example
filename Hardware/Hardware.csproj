@@ -145,13 +145,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crc16citt.cs" />
+    <Compile Include="Print\Enums.cs" />
     <Compile Include="Print\Native\RawPrinterHelper.cs" />
+    <Compile Include="Print\Tsc\PrintCmdEntity.cs" />
+    <Compile Include="Print\Zebra\DeviceContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\Enums.cs" />
     <Compile Include="Print\Tsc\PrintControlEntity.cs" />
     <Compile Include="Print\Tsc\PrintSetupEntity.cs" />
     <Compile Include="Print\Zebra\DeviceEntity.cs" />
-    <Compile Include="Print\Zebra\DeviceСontainer.cs" />
     <Compile Include="Print\PrintEntity.cs" />
     <Compile Include="Print\Zebra\StateEntity.cs" />
     <Compile Include="Print\Zebra\StatusDataCollector.cs" />
@@ -162,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CHANGELOG.md" />
     <None Include="packages.config" />
     <None Include="Zpl templates\EAC_107x109_090.ZPL" />
     <None Include="Zpl templates\FISH_94x115_000.ZPL" />

@@ -1,7 +1,10 @@
-﻿using System;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+using System;
 using System.Windows;
+using Hardware.Print;
 using Hardware.Print.Tsc;
-using Hardware.Utils;
 using Hardware.Zpl;
 
 namespace TscBarcode.Views
@@ -34,7 +37,7 @@ namespace TscBarcode.Views
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            ButtonEthernetClose_Click(sender, null);
+            ButtonClose_Click(sender, null);
         }
 
         #endregion
@@ -68,49 +71,59 @@ namespace TscBarcode.Views
             //TscLib.closeport();
         }
 
-        private void ButtonEthernetOpen_Click(object sender, RoutedEventArgs e)
+        private void ButtonOpen_Click(object sender, RoutedEventArgs e)
         {
             PrintControl.Open();
         }
 
-        private void ButtonCalibrate_Click(object sender, RoutedEventArgs e)
+        private void ButtonCmdCalibrate_Click(object sender, RoutedEventArgs e)
         {
-            PrintControl.Calibrate(false, true);
+            PrintControl.Cmd.Calibrate(false, PrintControl.IsClearBuffer);
         }
 
-        private void ButtonEthernetClose_Click(object sender, RoutedEventArgs e)
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             PrintControl.Close();
         }
 
-        private void ButtonEthernetSendCmd_Click(object sender, RoutedEventArgs e)
+        private void ButtonCmdSendCustom_Click(object sender, RoutedEventArgs e)
         {
-            PrintControl.SendCmd(false, PrintControl.Cmd, true);
+            PrintControl.Cmd.SendCustom(false, PrintControl.Cmd.Text, PrintControl.IsClearBuffer);
         }
 
-        private void ButtonEthernetSetCutter_Click(object sender, RoutedEventArgs e)
+        private void ButtonCmdConvertZpl_Click(object sender, RoutedEventArgs e)
         {
-            PrintControl.SetCutter(false, PrintControl.CutterValue, true);
+            PrintControl.Cmd.ConvertZpl(true);
         }
 
-        private void ButtonEthernetPrintTest_Click(object sender, RoutedEventArgs e)
+        private void ButtonCmdSetCutter_Click(object sender, RoutedEventArgs e)
         {
-            PrintControl.PrintTest(false);
+            PrintControl.Cmd.SetCutter(false, PrintControl.CutterValue, PrintControl.IsClearBuffer);
         }
 
-        private void ButtonEthernetClearBuffer_Click(object sender, RoutedEventArgs e)
+        private void ButtonCmdPrintTest_Click(object sender, RoutedEventArgs e)
         {
-            PrintControl.ClearBuffer(false);
+            PrintControl.Cmd.PrintTest(true);
         }
 
-        private void ButtonEthernetPrinterSetupReset_Click(object sender, RoutedEventArgs e)
+        private void ButtonCmdClearBuffer_Click(object sender, RoutedEventArgs e)
         {
-            PrintControl.Setup(LabelSize.Size80x100, true);
+            PrintControl.Cmd.ClearBuffer(true);
         }
 
-        private void ButtonEthernetPrinterSetup_Click(object sender, RoutedEventArgs e)
+        private void ButtonPrintSetupReset_Click(object sender, RoutedEventArgs e)
+        {
+            PrintControl.Setup(PrintLabelSize.Size80x100, true);
+        }
+
+        private void ButtonPrintSetup_Click(object sender, RoutedEventArgs e)
         {
             PrintControl.Setup(PrintControl.Size, true);
+        }
+
+        private void ButtonFeed_Click(object sender, RoutedEventArgs e)
+        {
+            PrintControl.Cmd.Feed(true, PrintControl.IsClearBuffer, PrintControl.Dpi, PrintControl.FeedMm);
         }
 
         #endregion
@@ -119,25 +132,26 @@ namespace TscBarcode.Views
 
         public void ButtonGetZpl1_OnClick(object sender, RoutedEventArgs e)
         {
-            PrintControl.Cmd = ZplPipeUtils.ToCodePoints(ZplSamples.GetSample1);
+            PrintControl.Cmd.TextPrepare = ZplSamples.GetSample1;
+            PrintControl.Cmd.ConvertZpl(true);
         }
 
         public void ButtonGetZpl2_OnClick(object sender, RoutedEventArgs e)
         {
-            PrintControl.Cmd = ZplPipeUtils.ToCodePoints(ZplSamples.GetSample2);
+            PrintControl.Cmd.TextPrepare = ZplSamples.GetSample2;
+            PrintControl.Cmd.ConvertZpl(true);
         }
 
         public void ButtonGetZpl3_OnClick(object sender, RoutedEventArgs e)
         {
-            PrintControl.Cmd = ZplPipeUtils.ToCodePoints(ZplSamples.GetSample3);
+            PrintControl.Cmd.TextPrepare = ZplSamples.GetSample3;
+            PrintControl.Cmd.ConvertZpl(true);
         }
 
         public void ButtonGetZplFull_OnClick(object sender, RoutedEventArgs e)
         {
-            PrintControl.Cmd = ZplPipeUtils.ToCodePoints(ZplSamples.GetSampleFull);
-            PrintControl.Cmd = PrintControl.Cmd.Replace("[EAC_107x109_090]", ZplSamples.GetEac);
-            PrintControl.Cmd = PrintControl.Cmd.Replace("[FISH_94x115_000]", ZplSamples.GetFish);
-            PrintControl.Cmd = PrintControl.Cmd.Replace("[TEMP6_116x113_090]", ZplSamples.GetTemp6);
+            PrintControl.Cmd.TextPrepare = ZplSamples.GetSampleFull;
+            PrintControl.Cmd.ConvertZpl(true);
         }
 
         #endregion
